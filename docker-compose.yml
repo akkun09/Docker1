@@ -1,0 +1,29 @@
+version: '3'
+services:
+  django:
+    image: kakeibo4
+    expose:
+      - "3031"
+    depends_on:
+      - db
+    command: >
+     bash -c 'pwd
+     && ls
+     && python tutorial/manage.py migrate
+     && cd tutorial
+     && gunicorn --env DJANGO_SETTINGS_MODULE=tutorial.settings tutorial.wsgi:application -b 0.0.0.0:3031'
+  nginx:
+    image: nginx
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx/:/etc/nginx/"
+  db:
+    image: postgres
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+
+volumes:
+  dbdata:
