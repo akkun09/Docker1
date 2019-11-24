@@ -9,6 +9,7 @@ services:
     command: >
      bash -c 'pwd
      && ls
+     && python tutorial/manage.py makemigrations kakeibo
      && python tutorial/manage.py migrate
      && cd tutorial
      && gunicorn --env DJANGO_SETTINGS_MODULE=tutorial.settings tutorial.wsgi:application -b 0.0.0.0:3031'
